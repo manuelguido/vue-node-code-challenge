@@ -33,7 +33,7 @@ export default defineComponent({
     return {
       name: "" as string,
       nameRules: [
-        value => {
+        (value: any) => {
           if (value) return true
           return 'Name is required.'
         },
@@ -43,7 +43,7 @@ export default defineComponent({
   },
   methods: {
     async register(): Promise<any> {
-      this.errors = "";
+      this.error = "";
 
       const url: string = "/api/register";
       const loginParams = { name: this.name, email: this.email, password: this.password };

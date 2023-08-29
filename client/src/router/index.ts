@@ -11,7 +11,7 @@ const routes = [
         name: "Home",
         component: home,
         // Check if the user is authenticated
-        beforeEnter: (to, from, next) => {
+        beforeEnter: (to: any, from: any, next: (arg0?: string | undefined) => any) => {
             // const store = useStore();
             store.getters['auth/isAuthenticated']
                 ? next() // Authenticated: Allow access to home page

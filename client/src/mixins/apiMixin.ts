@@ -1,9 +1,14 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import store from '@/store';
+import router from '@/router';
+
 
 const apiMixin = {
   mounted() {
     axios.defaults.withCredentials = true;
+    axios.defaults.baseURL = 'http://localhost:8000/';
     axios.defaults.headers.common['Accept'] = "application/json"
+    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}` || null;
   },
 
   methods: {
@@ -11,7 +16,7 @@ const apiMixin = {
       try {
         const response: AxiosResponse<T> = await axios.get(url, { params });
         return response;
-      } catch (error) {
+      } catch (error: any) {
         this.handleAxiosError(error);
         throw error;
       }
@@ -21,7 +26,7 @@ const apiMixin = {
       try {
         const response: AxiosResponse<T> = await axios.post(url, data);
         return response;
-      } catch (error) {
+      } catch (error: any) {
         this.handleAxiosError(error);
         throw error;
       }
@@ -31,7 +36,7 @@ const apiMixin = {
       try {
         const response: AxiosResponse<T> = await axios.patch(url, data);
         return response;
-      } catch (error) {
+      } catch (error: any) {
         this.handleAxiosError(error);
         throw error;
       }
@@ -41,7 +46,7 @@ const apiMixin = {
       try {
         const response: AxiosResponse<T> = await axios.delete(url);
         return response;
-      } catch (error) {
+      } catch (error: any) {
         this.handleAxiosError(error);
         throw error;
       }
@@ -50,8 +55,8 @@ const apiMixin = {
     // Common error handling method
     handleAxiosError(error: AxiosError) {
       if (error.response && error.response.status === 401) {
-        this.$store.dispatch("auth/logout");
-        this.$router.push("/login");
+        store.dispatch("auth/logout");
+        router.push("/login");
       }
     },
   },
