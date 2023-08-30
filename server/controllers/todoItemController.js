@@ -90,6 +90,39 @@ exports.update = async (req, res) => {
 
 /*
 |--------------------------------------------------------------------------
+| Destroy
+|--------------------------------------------------------------------------
+*/
+exports.destroy = async (req, res) => {
+  try {
+    const user = req.user;
+    const { id } = req.params;
+
+    // Get todo item from the database
+    const todoItem = await db('todo_items').where({ id: id, user_id: user.id }).first();
+
+    // If does not exist
+    if (!todoItem) {
+      return res.status(404).json({ message: 'Todo item not found' });
+      // If does not belong to the user
+    } else if (todoItem.user_id !== parseInt(user.id)) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    // Delete the todo item from the database
+    await db('todo_items').where('id', id).delete();
+
+    // Success response
+    res.status(204).send();
+  } catch (error) {
+    console.error(error);
+    // Error response
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+/*
+|--------------------------------------------------------------------------
 | Update status
 |--------------------------------------------------------------------------
 */

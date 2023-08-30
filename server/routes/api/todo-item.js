@@ -13,6 +13,9 @@ router.post('', authenticateMiddleware, todoItemController.store);
 // Update route
 router.patch('/:id', authenticateMiddleware, todoItemController.update);
 
+// Delete route
+router.delete('/:id', authenticateMiddleware, todoItemController.destroy);
+
 // Update todo item status (Put or Patch)
 router.put('/:id/status', authenticateMiddleware, todoItemController.updateStatus);
 router.patch('/:id/status', authenticateMiddleware, todoItemController.updateStatus);
