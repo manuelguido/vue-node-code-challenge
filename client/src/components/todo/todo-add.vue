@@ -25,7 +25,7 @@ export default defineComponent({
 
 			this.$httpPost(url, parameters)
 				.then((response: any) => {
-					this.$store.commit('todo/addTodo', response.data.todo_item);
+					this.$store.commit('todo/addTodo', response.data);
 					this.newTodo = ""
 				})
 				.catch((error) => {

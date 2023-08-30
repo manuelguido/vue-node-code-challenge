@@ -35,6 +35,7 @@ const actions = {
 const getters = {
     isAuthenticated: (state: any) => !!state.user,
     user: (state: any) => state.user,
+    token: (state: any) => state.token,
 };
 
 export default {

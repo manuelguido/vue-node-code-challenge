@@ -1,14 +1,20 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import store from '@/store';
 import router from '@/router';
-
+import { mapGetters } from 'vuex';
 
 const apiMixin = {
+  computed: {
+    ...mapGetters({
+      token: 'auth/token'
+    }),
+  },
+
   mounted() {
     axios.defaults.withCredentials = true;
     axios.defaults.baseURL = 'http://localhost:8000/';
-    axios.defaults.headers.common['Accept'] = "application/json"
-    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}` || null;
+    // axios.defaults.headers.common['Accept'] = "application/json"
+    axios.defaults.headers.common['Authorization'] = `${this.token}`;
   },
 
   methods: {
