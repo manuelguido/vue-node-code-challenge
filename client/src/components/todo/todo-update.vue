@@ -28,7 +28,7 @@ export default defineComponent({
 
       this.$httpPatch(url, parameters)
         .then((response: any) => {
-          this.$store.commit('todo/updateTodo', response.data.todo_item);
+          this.$store.commit('todo/updateTodo', response.data);
           this.$emit("editing:disable");
         })
         .catch((error) => {
