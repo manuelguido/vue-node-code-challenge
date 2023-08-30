@@ -2,6 +2,17 @@ const userModel = require('../models/user.model');
 const todoItemModel = require('../models/todo-item.model');
 const db = require('../knex');
 
+function validateTodo(todoItem, user) {
+  // If todo item does not exists
+  if (!todoItem) {
+    return res.status(404).json({ message: 'Todo item not found' });
+  }
+  // If does not belong to the user
+  else if (todoItem.user_id !== parseInt(user.id)) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+}
+
 /*
 |--------------------------------------------------------------------------
 | Index
@@ -66,13 +77,8 @@ exports.update = async (req, res) => {
     // Get todo item from db
     const todoItem = await db('todo_items').where({ id: id, user_id: user.id }).first();
 
-    // If does not exist
-    if (!todoItem) {
-      return res.status(404).json({ message: 'Todo item not found' });
-      // If does not belong to the user
-    } else if (todoItem.user_id !== parseInt(user.id)) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
+    // Validate todoItem
+    validateTodo(todoItem, user);
 
     // Update the name of the todoItem
     await db('todo_items').where('id', id).update({ name: name });
@@ -101,13 +107,8 @@ exports.destroy = async (req, res) => {
     // Get todo item from the database
     const todoItem = await db('todo_items').where({ id: id, user_id: user.id }).first();
 
-    // If does not exist
-    if (!todoItem) {
-      return res.status(404).json({ message: 'Todo item not found' });
-      // If does not belong to the user
-    } else if (todoItem.user_id !== parseInt(user.id)) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
+    // Validate todoItem
+    validateTodo(todoItem, user);
 
     // Delete the todo item from the database
     await db('todo_items').where('id', id).delete();
@@ -136,13 +137,8 @@ exports.updateStatus = async (req, res) => {
     // Get todo item from db
     const todoItem = await db('todo_items').where({ id: id, user_id: user.id }).first();
 
-    // If does not exist
-    if (!todoItem) {
-      return res.status(404).json({ message: 'Todo item not found' });
-      // If does not belong to the user
-    } else if (todoItem.user_id !== parseInt(user.id)) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
+    // Validate todoItem
+    validateTodo(todoItem, user);
 
     // Update the name of the todoItem
     await db('todo_items').where('id', id).update({ is_finished: is_finished });
