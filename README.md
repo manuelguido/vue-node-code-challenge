@@ -1,5 +1,5 @@
 
-# Vue Laravel Coding Challenge - Developed by Manuel Guido
+# Vue Node Coding Challenge - Developed by Manuel Guido
 
 ## Download project
 
